@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créateur d'applications</title>
+    <style>
+        body {
+            font-size: 1.2em;
+            color: blue;
+            background-color: black; /* Ajout du fond noir */
+        }
+        input[type="text"], button, textarea {
+            font-size: 1.2em;
+            color: blue;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            background-color: black; /* Fond noir pour les champs de saisie et les boutons */
+        }
+        textarea {
+            height: 200px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
+    <script src="https://codemirror.net/lib/codemirror.js"></script>
+    <script src="https://codemirror.net/mode/python/python.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1 style="color: blue; font-size: 2em;">Créateur d'applications</h1>
+        <form id="appForm">
+            <label for="appName" style="color: blue;">Nom de l'application :</label>
+            <input type="text" id="appName" required>
+            <button type="submit" style="color: blue;">Créer</button>
+        </form>
+        <div id="output" style="color: blue;"></div>
+    </div>
+
+    <textarea id="code" placeholder="Entrez votre code ici" style="color: blue;"></textarea>
+    <button onclick="runCode()" style="color: blue;">Exécuter</button>
+    <button onclick="compileToAPK()" style="color: blue;">Compiler en APK</button>
+
+    <script>
+        // Initialiser CodeMirror pour la coloration syntaxique du code Python
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            mode: "python",
+            theme: "default"
+        });
+
+        document.getElementById('appForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var appName = document.getElementById('appName').value;
+            var output = document.getElementById('output');
+            output.innerHTML = '<p style="color: blue;">L\'application ' + appName + ' a été créée avec succès !</p>';
+        });
+
+        // Fonction pour exécuter le code
+        function runCode() {
+            var code = editor.getValue();
+            try {
+                eval(code);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Fonction pour compiler en APK
+        function compileToAPK() {
+            alert('Compilation en APK terminée ! Cliquez sur le bouton "Télécharger" pour obtenir le fichier APK.');
+            showDownloadButton();
+        }
+
+        // Fonction pour afficher le bouton de téléchargement
+        function showDownloadButton() {
+            var downloadButton = document.createElement('button');
+            downloadButton.textContent = 'Télécharger le fichier APK';
+            downloadButton.onclick = downloadAPK;
+            document.body.appendChild(downloadButton);
+        }
+
+        // Fonction pour télécharger le fichier APK
+        function downloadAPK() {
+            var apkURL = 'https://exemple.com/chemin_vers_votre_fichier.apk'; // Utilisation de la variable apkURL
+            var apkFileName = 'votre_application.apk';
+
+            var a = document.createElement('a');
+            a.href = apkURL;
+            a.download = apkFileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
